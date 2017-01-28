@@ -1,0 +1,26 @@
+
+# example.pcf
+
+# from icestick users evaluation guide,
+# note, no pin 5 and 6
+# something is'nt right
+
+# identifier    fpga pin, uart name,  ftdi pin,     spi
+set_io gpio_l2  1 #       dcd         45,   us6     gpio-l2
+set_io gpio_l1  2 #       dsr         44,   us5     gpio-l1
+set_io gpio_l0  3 #       dtr         43,   us4     gpio-l0     # use as cs
+set_io cs       4 #       ctsn        41,   us3     cs          # ignore
+set_io miso     7 #       rtsn        40,   us2     sclk
+set_io mosi     8 #       tx ttl,     39,   us1     miso
+set_io sclk     9 #       rx ttl,     38,   us0     mosi
+
+
+# hmmmm which led is which???
+set_io led1 99    # blinking so D1 or a
+set_io led2 98
+set_io led3 97
+set_io led4 96
+set_io led5 95
+
+set_io clk 21
+
