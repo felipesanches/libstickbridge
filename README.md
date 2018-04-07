@@ -1,5 +1,5 @@
 
-### Using the Icestick USB controller for fpga SPI communications
+### Using Icestick fpga USB channel B for SPI communication
 
 http://blog.julian1.io/2017/01/29/icestick-ftdi-spi.html
 
