@@ -1,3 +1,12 @@
+## libstickbridge
+
+This is a C library to establish an SPI channel with hardware instantiated in an iCE40 ICEStick FPGA over an USB bridge via the FTDI FT2232H chip.
+
+Original code written by julian1 <https://github.com/julian1/ice40-spi-usb-controller> based on Clifford Wolf's iceprog program from <https://github.com/cliffordwolf/icestorm.git>.
+
+The code was subsequently refactored into this static library (Lib-Stick-Bridge) by Felipe Correa da Silva Sanches <juca@members.fsf.org>.
+
+Happy Hacking!
 
 ### Using Icestick fpga USB channel B for SPI communication
 
