@@ -1,28 +1,30 @@
+HW_DESIGN_NAME=spi-slave
+SW_CLIENT_NAME=spi_bridge
+
+BLIF=./build/$(HW_DESIGN_NAME).blif
+ASCII=./build/$(HW_DESIGN_NAME).txt
+BITSTREAM=./build/$(HW_DESIGN_NAME).bin
+VERILOG=$(HW_DESIGN_NAME).v
+PCF=$(HW_DESIGN_NAME).pcf
+
+PNR_OPTIONS=-d 1k
+# PNR_OPTIONS=-d 8k -P ct256
+
 all: software hardware
 
 software:
-	gcc example_spi_bridge.c -lstickbridge -lftdi -o ./example_spi_bridge
+	gcc $(SW_CLIENT_NAME).c -lstickbridge -lftdi -o $(SW_CLIENT_NAME)
 
 hardware:
-	mkdir ./build
+	mkdir -p ./build
+	yosys -p 'synth_ice40 -top top -blif $(BLIF)' $(VERILOG) | grep -iE 'Warning|Error' || exit
+	arachne-pnr   $(PNR_OPTIONS) -o $(ASCII) -p $(PCF) $(BLIF) 2> /dev/null || exit
+	icepack $(ASCII) $(BITSTREAM)
+	# icetime $(ASCII) -d hx8k
 
-	echo ------- yosys
-	yosys -p 'synth_ice40 -top top -blif ./build/example.blif' example.v | grep -iE 'Warning|Error' || exit
-
-	echo ------- arachne-pnr
-	# arachne-pnr -d 8k -P ct256 -o ./build/example.asc -p example.pcf ./build/example.blif 2> /dev/null || exit
-	arachne-pnr -d 1k -o ./build/example.asc -p example.pcf ./build/example.blif 2> /dev/null || exit
-
-	echo ------- icepack
-	icepack ./build/example.asc ./build/example.bin
-
-	# echo ------- icetime
-	# icetime ./build/example.asc -d hx8k
-
-upload: hardware
-	echo ------- iceprog
-	iceprog build/example.bin
+upload:
+	iceprog $(BITSTREAM)
 
 clean:
-	rm -f example_spi_bridge
+	rm -f $(SW_CLIENT_NAME)
 	rm -rf ./build
