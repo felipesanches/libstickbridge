@@ -1,26 +1,21 @@
+#       SPI name   FPGA pin    FTDI pin
+#set_io   gpio_l2   1         # BDBUS6 (45)
+#set_io   gpio_l1   2         # BDBUS5 (44)
+#set_io   gpio_l0   3         # BDBUS4 (43)
 
-# example.pcf
+# SPI signals:
+#              name   FPGA pin    FTDI pin
+set_io           cs   4         # BDBUS3 (41)
+set_io         miso   7         # BDBUS2 (40)
+set_io         mosi   8         # BDBUS1 (39)
+set_io         sclk   9         # BDBUS0 (38)
 
-# from icestick users evaluation guide,
-# note, no pin 5 and 6
-# something is'nt right
-
-# identifier    fpga pin, uart name,  ftdi pin,     spi
-set_io gpio_l2  1 #       dcd         45,   us6     gpio-l2
-set_io gpio_l1  2 #       dsr         44,   us5     gpio-l1
-set_io gpio_l0  3 #       dtr         43,   us4     gpio-l0     # use as cs
-set_io cs       4 #       ctsn        41,   us3     cs          # ignore
-set_io miso     7 #       rtsn        40,   us2     sclk
-set_io mosi     8 #       tx ttl,     39,   us1     miso
-set_io sclk     9 #       rx ttl,     38,   us0     mosi
-
-
-# hmmmm which led is which???
-set_io led1 99    # blinking so D1 or a
-set_io led2 98
-set_io led3 97
-set_io led4 96
-set_io led5 95
+# LEDs:
+set_io D1 99
+set_io D2 98
+set_io D3 97
+set_io D4 96
+set_io D5 95 # center
 
 set_io clk 21
 

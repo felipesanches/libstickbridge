@@ -52,16 +52,8 @@ int main(int argc, char **argv)
 
 	stickbridge_init();
 
-	// assert CS 
-	set_gpio(0, 1, 1);
-
 	data[0] = led_value ? 0xcc : 0xdd;
-
-	// write
 	send_spi(data, 1);
-
-	// deassert CS
-	set_gpio(1, 1, 1);
 
 	stickbridge_done();
 	return 0;

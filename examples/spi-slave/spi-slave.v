@@ -1,31 +1,10 @@
-
-
-module blinkmodule (
-  input  clk,
-  output LED
-);
-  reg [31:0] counter2 = 0;
-
-  always@(posedge clk) begin
-    counter2 <= counter2 + 1;
-  end
-  assign {LED} = counter2 >> 20;
-  // assign {LED} = counter2 >> 10;
-endmodule
-
-
-
-// works!
-
 module SPI_slave(
   input clk,
-
   input SCK,
   input SSEL,
   input MOSI,
   output MISO,
-
-  output led1 
+  output LED
 );
 
   // clk domain crossing - this works by storing the last two sck states, and then compare them to
@@ -48,8 +27,7 @@ module SPI_slave(
 
 
   /////////////////////////////////////
-  // read in 8bit message
-  // IT would be easy to make this longer
+  // read in 8 bit message
   // we handle SPI in 8-bits format, so we need a 3 bits counter to count the bits as they come in
   reg [2:0] bitcnt;
   reg byte_received;  // high when a byte has been received
@@ -72,69 +50,44 @@ module SPI_slave(
   always @(posedge clk)
     byte_received <= SSEL_active && SCK_risingedge && (bitcnt==3'b111) ;
 
-// toggle would be better
-
   always @(posedge clk)
     begin
       if(byte_received) 
         case (byte_data_received)
           8'hcc:
-            led1 <= 1;
+            LED <= 1;
           8'hdd:
-            led1 <= 0;
+            LED <= 0;
       endcase
     end
-
-
 endmodule
-
-
 
 module top (
   input  clk,
-
-  output led1,
-  output led2,
-  output led3,
-  output led4,
-  output led5,
-
-  input gpio_l2,
-  input gpio_l1,
-  input gpio_l0,
-  input cs,      // ignore
-
+  output D1,
+  output D2,
+  output D3,
+  output D4,
+  output D5,
+  input cs,
   input sclk,
   output miso,
   input mosi
 );
 
-
-  blinkmodule #()
-  blinkmodule
-    (
-    .clk(clk),
-    .LED(led1)
-  );
- 
-  // ok, we may have slowed down the clock... 
-  // there's no freaking clock...
-
-  assign led2 = sclk;
-
   SPI_slave #()
   SPI_slave
     (
     .clk(clk),
-
     .SCK(sclk),
     .MOSI(mosi),
     .MISO(miso),
-    .SSEL(gpio_l0),
-
-    .led1(led3) //,
+    .SSEL(cs),
+    .LED(D1)
   );
 
+  assign D2 = 0;
+  assign D3 = 0;
+  assign D4 = 0;
+  assign D5 = sclk;
 endmodule
-
-
